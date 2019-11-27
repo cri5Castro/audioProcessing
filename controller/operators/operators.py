@@ -9,7 +9,7 @@ def interpolate(sig, factor:int):
 def decimate(sig,factor:int):
     return signal.resample(sig,math.ceil(sig.shape[0]/factor))
 
-def shift(sig,factor:int,axis=None):
+def shift(sig,factor:int):
     if factor == 0: 
         return sig
     if np.abs(factor) > sig.size:
