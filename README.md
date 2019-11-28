@@ -33,3 +33,8 @@ python -m controller reflect signal_path -o opath
 ````bash
 python -m controller <command> -h
 ````
+## Requirements:
+- [Matplotlib](https://matplotlib.org/)
+- [Scipy](https://scipy.org/install.html)
+- [Numpy](https://numpy.org/)
+- [wavio](https://github.com/WarrenWeckesser/wavio)
