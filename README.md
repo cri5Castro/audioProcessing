@@ -28,3 +28,7 @@ python -m controller reflect signal_path -o opath
 ````bash
 python -m controller reflect signal_path -o opath
 ````
+-help: launch the help and detailed instructions for each command
+````bash
+python -m controller <command> -h
+````
