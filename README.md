@@ -8,6 +8,7 @@ toolbox to perfom basic operations over audio signals
 ````bash
 python -m controller <options> <*args>
 ````
+## Examples
 - Interpolation: perfom linear interpolation over a signal by a factor and plot the resulting signals
 ````bash
 python -m controller interpolate pika.wav 2  -p True
