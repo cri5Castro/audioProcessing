@@ -7,52 +7,110 @@ from controller.plot import plotter
 from controller import operators
 
 def plot(options):
+    """plots signals from option.files
+    
+    Arguments:
+        options.files {array} -- [contains the files where the signals comes from]
+    """
     kwargs={f'{i}': wavio.read(i).data for i in options.files}
     plotter.plot(**kwargs)
     
 def interpolate(options):
+    """[interpolates a signal by a factor options.factor]
+    
+    Arguments:
+        options.factor {string}  -- [factor of interpolation]
+        options.ipath  {string}  -- [path to the input signal]
+        options.opath  {string}  -- [path for the output signal]
+        options.plot   {boolean} -- [option to plot the signals]
+    """
     signal=wavio.read(options.ipath)
     result=operators.interpolate(signal.data,int(options.factor))
-    plotter.plot(**{options.ipath:signal.data,options.opath:result})
     wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    if options.plot:
+        plotter.plot(**{options.ipath:signal.data,options.opath:result})
 
 def decimate(options):
+    """[downsample a signal by a factor options.factor]
+    
+    Arguments:
+        options.factor {string}  -- [factor of interpolation]
+        options.ipath  {string}  -- [path to the input signal]
+        options.opath  {string}  -- [path for the output signal]
+        options.plot   {boolean} -- [option to plot the signals]
+    """
     signal=wavio.read(options.ipath)
     result=operators.decimate(signal.data,int(options.factor))
-    plotter.plot(**{options.ipath:signal.data,options.opath:result})
     wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    if options.plot:
+        plotter.plot(**{options.ipath:signal.data,options.opath:result})
 
 def shift(options):
+    """[shift a signal in time ]
+    
+    Arguments:
+        options.factor {string}  -- [factor of interpolation]
+        options.ipath  {string}  -- [path to the input signal]
+        options.opath  {string}  -- [path for the output signal]
+        options.plot   {boolean} -- [option to plot the signals]
+    """
     signal=wavio.read(options.ipath)
     result=operators.shift(signal.data,int(options.factor))
-    plotter.plot(**{options.ipath:signal.data,options.opath:result})
     wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    if options.plot:
+        plotter.plot(**{options.ipath:signal.data,options.opath:result})
 
 def reflect(options):
+    """[reflect the signal in time]
+    
+    Arguments:
+        options.ipath  {string}  -- [path to the input signal]
+        options.opath  {string}  -- [path for the output signal]
+        options.plot   {boolean} -- [option to plot the signals]
+    """
     signal=wavio.read(options.ipath)
     result=operators.reflect(signal.data)
-    plotter.plot(**{options.ipath:signal.data,options.opath:result})
     wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    if options.plot:
+        plotter.plot(**{options.ipath:signal.data,options.opath:result})
     
 def mamplitude(options):
+    """[modifies the amplitude of a signal]
+    
+    Arguments:
+        options.factor {string}  -- [factor of interpolation]
+        options.ipath  {string}  -- [path to the input signal]
+        options.opath  {string}  -- [path for the output signal]
+        options.plot   {boolean} -- [option to plot the signals]
+    """
     signal=wavio.read(options.ipath)
     result=operators.mamplitude(signal.data,float(options.factor))
-    plotter.plot(**{options.ipath:signal.data,options.opath:result})
     wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    if options.plot:
+        plotter.plot(**{options.ipath:signal.data,options.opath:result})
+def guiMode(options):
+    """[Launches a gui to perfom operations over audio signals]
+    
+    Arguments:
+        options {[type]} -- [description]
+    """
+    pass
 
 def run(args):
-    #X = {-2:10,-1:-1,0:4,1:2,2:-3,3:6,4:9}
-    #X = dict(enumerate(np.sin(range(-10,10))))
-    #Y = {-2:2,-1:-4,0:-5} 
+    """[parse arguments from shell to perfom the desired operations]
     
+    Arguments:
+        args -- [arguments]
+    """
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()    
-    #create a downloa subcommand
+    #create a plot subcommand
     parser_plot = subparsers.add_parser('plot',aliases=["plt","p"],
                                             help='plot a set of discrete signals')
     parser_plot.add_argument('files',nargs='+',help='audio files to be plotted requiers >=1')
     parser_plot.set_defaults(func=plot)
     
+    #create a interpolation subcommand
     parser_interpolation = subparsers.add_parser('interpolate',aliases=["inp","interp"],
                                             help='interpolate a signal by a factor a')
     parser_interpolation.add_argument('ipath',help='path of the file which contains the signal')
@@ -61,7 +119,7 @@ def run(args):
     parser_interpolation.add_argument('-plot', '-p', help="plot the resulting signal",default=False)
     parser_interpolation.set_defaults(func=interpolate)
 
-
+    #create a decimation subcommand
     parser_decimation = subparsers.add_parser('decimate',aliases=["dec","d"],
                                             help='downsample a signal by a factor a')
     parser_decimation.add_argument('ipath',help='path of the file which contains the signal')
@@ -70,6 +128,7 @@ def run(args):
     parser_decimation.add_argument('-plot', '-p', help="plot the resulting signal",default=False)
     parser_decimation.set_defaults(func=decimate)
 
+    #create a shift subcommand
     parser_shift = subparsers.add_parser('shift',aliases=["s","sh"],
                                             help='shifts a signal n times in time')
     parser_shift.add_argument('ipath',help='path of the file which contains the signal')
@@ -78,6 +137,7 @@ def run(args):
     parser_shift.add_argument('-plot', '-p', help="plot the resulting signal",default=False)
     parser_shift.set_defaults(func=shift)
     
+    #create a reflect subcommand
     parser_reflect = subparsers.add_parser('reflect',aliases=["r","rf"],
                                             help='reflecrts a signal  in time')
     parser_reflect.add_argument('ipath',help='path of the file which contains the signal')
@@ -85,6 +145,7 @@ def run(args):
     parser_reflect.add_argument('-plot', '-p', help="plot the resulting signal",default=False)
     parser_reflect.set_defaults(func=reflect)
     
+    #create a mamplitude subcommand
     parser_mamplitude = subparsers.add_parser('mamplitude',aliases=["ma","mamp"],
                                             help='modifies the amplitude of a signal')
     parser_mamplitude.add_argument('ipath',help='path of the file which contains the signal')
@@ -93,8 +154,12 @@ def run(args):
     parser_mamplitude.add_argument('-plot', '-p', help="plot the resulting signal",default=False)
     parser_mamplitude.set_defaults(func=mamplitude)
     
-
-
+    #create a gui subcommand
+    parser_gui = subparsers.add_parser('gui',aliases=["g","interface"],
+                                            help='launches the program in gui mode')
+    parser_gui.set_defaults(func=guiMode)
+    
+    #parse arguments from shell
     if len(sys.argv) <= 1:
         sys.argv.append('--help')
     options = parser.parse_args()
