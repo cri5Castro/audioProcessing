@@ -1,10 +1,10 @@
 import sys
 import ast
 import argparse
-import wavio
 from collections import OrderedDict
 from controller.plot import plotter
-from controller import operators
+import controller.operators.math as op
+import controller.operators.audio as audio
 
 
 def plot(options):
@@ -13,7 +13,7 @@ def plot(options):
     Arguments:
         options.files {array} -- [contains the files where the signals comes from]
     """
-    kwargs = {f'{i}': wavio.read(i).data for i in options.files}
+    kwargs = {f'{i}': audio.read(i).data for i in options.files}
     plotter.plot(**kwargs)
 
 
@@ -26,9 +26,9 @@ def interpolate(options):
         options.opath  {string}  -- [path for the output signal]
         options.plot   {boolean} -- [option to plot the signals]
     """
-    signal = wavio.read(options.ipath)
-    result = operators.interpolate(signal.data, int(options.factor))
-    wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    signal = audio.read(options.ipath)
+    result = op.interpolate(signal.data, int(options.factor))
+    audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
         plotter.plot(**{options.ipath: signal.data, options.opath: result})
 
@@ -42,9 +42,9 @@ def decimate(options):
         options.opath  {string}  -- [path for the output signal]
         options.plot   {boolean} -- [option to plot the signals]
     """
-    signal = wavio.read(options.ipath)
-    result = operators.decimate(signal.data, int(options.factor))
-    wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    signal = audio.read(options.ipath)
+    result = op.decimate(signal.data, int(options.factor))
+    audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
         plotter.plot(**{options.ipath: signal.data, options.opath: result})
 
@@ -58,9 +58,9 @@ def shift(options):
         options.opath  {string}  -- [path for the output signal]
         options.plot   {boolean} -- [option to plot the signals]
     """
-    signal = wavio.read(options.ipath)
-    result = operators.shift(signal.data, int(options.factor))
-    wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    signal = audio.read(options.ipath)
+    result = op.shift(signal.data, int(options.factor))
+    audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
         plotter.plot(**{options.ipath: signal.data, options.opath: result})
 
@@ -73,9 +73,9 @@ def reflect(options):
         options.opath  {string}  -- [path for the output signal]
         options.plot   {boolean} -- [option to plot the signals]
     """
-    signal = wavio.read(options.ipath)
-    result = operators.reflect(signal.data)
-    wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    signal = audio.read(options.ipath)
+    result = op.reflect(signal.data)
+    audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
         plotter.plot(**{options.ipath: signal.data, options.opath: result})
 
@@ -89,9 +89,9 @@ def mamplitude(options):
         options.opath  {string}  -- [path for the output signal]
         options.plot   {boolean} -- [option to plot the signals]
     """
-    signal = wavio.read(options.ipath)
-    result = operators.mamplitude(signal.data, float(options.factor))
-    wavio.write(options.opath, result, signal.rate, sampwidth=1)
+    signal = audio.read(options.ipath)
+    result = op.mamplitude(signal.data, float(options.factor))
+    audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
         plotter.plot(**{options.ipath: signal.data, options.opath: result})
 
