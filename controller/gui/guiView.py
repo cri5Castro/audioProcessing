@@ -141,7 +141,7 @@ class MainWindow(App):
 
     def onclick_ReflectBtn(self, emitter):
         ipath=self.MainContainer.children['filesSelectBox'].get_value()
-        instruction = 'python -m controller reflect '+ipath
+        instruction = 'python -m controller reflect '+ipath+' -p True'
         os.system(instruction)
 
     def onclick_ModulateBtn(self, emitter):
