@@ -13,7 +13,6 @@ def interpolate(sig, factor: int):
     Returns:
         [np.array] -- [interpolated signal]
     """
-    print(factor)
     return signal.resample(sig, sig.size*factor)
 
 

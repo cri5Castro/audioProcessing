@@ -5,6 +5,8 @@ from collections import OrderedDict
 from controller.plot import plotter
 import controller.operators.math as op
 import controller.operators.audio as audio
+from remi import start, App
+from controller.gui.guiView import *
 
 
 def plot(options):
@@ -30,7 +32,7 @@ def interpolate(options):
     result = op.interpolate(signal.data, int(options.factor))
     audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
-        plotter.plot(**{options.ipath: signal.data, options.opath: result})
+        plotter.plot(**{'Input: '+options.ipath: signal.data, 'Output: '+options.opath: result})
 
 
 def decimate(options):
@@ -116,7 +118,13 @@ def guiMode(options):
     Arguments:
         options {[type]} -- [description]
     """
-    pass
+    configuration = {'config_project_name': 'untitled', 'config_address': '0.0.0.0',
+                     'config_port': 8081, 'config_multiple_instance': True, 'config_enable_file_cache': True,
+                     'config_start_browser': True, 'config_resourcepath': './res/'}
+    start(MainWindow, address=configuration['config_address'], port=configuration['config_port'],
+          multiple_instance=configuration['config_multiple_instance'],
+          enable_file_cache=configuration['config_enable_file_cache'],
+          start_browser=configuration['config_start_browser'])
 
 
 def run(args):
