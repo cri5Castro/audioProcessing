@@ -130,7 +130,7 @@ class MainWindow(App):
 
     def onclick_PlayBtn(self, emitter):
         ipath=self.MainContainer.children['filesSelectBox'].get_value()
-        instruction = 'python -m controller play '+ipath+' -p True'
+        instruction = 'python -m controller play '+ipath
         os.system(instruction)
         
     def onclick_ShiftBtn(self, emitter):
