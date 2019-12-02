@@ -112,7 +112,7 @@ class MainWindow(App):
         return self.MainContainer
     
     def onclick_recordButton(self, emitter):
-        instruction = 'python -m record -p True'
+        instruction = 'python -m controller record -p True'
         self.MainContainer.children['filesSelectBox'].set_value('record.wav')
         os.system(instruction)
 
