@@ -47,7 +47,7 @@ def record(rate=22050, secs=4, store=True, opath='record.wav'):
         [discrete signal]
     """
     recording = Struct()
-    recording.data = sd.rec(int(secs * rate), samplerate=rate, channels=2)
+    recording.data = sd.rec(int(secs * rate), samplerate=rate, channels=1)
     recording.rate = rate
     sd.wait()  # Wait until recording is finished
     if store:

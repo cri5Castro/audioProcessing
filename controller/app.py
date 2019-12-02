@@ -96,6 +96,20 @@ def mamplitude(options):
         plotter.plot(**{options.ipath: signal.data, options.opath: result})
 
 
+def record(options):
+    """records audio from computer's built in mic
+
+    Keyword Arguments:
+        options.secs {int} -- [seconds to record (segs)] (default: {4})
+        options.opath {str} -- [output path] (default: {'record.wav'})
+        options.plot   {boolean} -- [option to plot the signals]
+    """
+    signal = audio.record(rate=22050, secs=options.secs,
+                          store=True, opath=options.opath)
+    if options.plot:
+        plotter.plot(**{options.opath: signal.data})
+
+
 def guiMode(options):
     """[Launches a gui to perfom operations over audio signals]
 
@@ -178,6 +192,17 @@ def run(args):
     parser_mamplitude.add_argument(
         '-plot', '-p', help="plot the resulting signal", default=False)
     parser_mamplitude.set_defaults(func=mamplitude)
+
+    # create a record subcommand
+    parser_record = subparsers.add_parser('record', aliases=["rec", "r"],
+                                          help='records audio from computer\'s built in mic')
+    parser_record.add_argument(
+        '-opath', '-o', help="Path to store the resulted signal", default='record.wav')
+    parser_record.add_argument(
+        '-secs', '-s', help="seconds of audio to be recorded", default=4)
+    parser_record.add_argument(
+        '-plot', '-p', help="plot the resulting signal", default=False)
+    parser_record.set_defaults(func=record)
 
     # create a gui subcommand
     parser_gui = subparsers.add_parser('gui', aliases=["g", "interface"],
