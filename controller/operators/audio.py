@@ -65,5 +65,7 @@ def play(ipath=None, signal=None):
     if ipath:
         signal = read(ipath)
         sd.play(signal.data, signal.rate)
+        sd.wait()
     elif signal:
         sd.play(signal.data, signal.rate)
+        sd.wait()

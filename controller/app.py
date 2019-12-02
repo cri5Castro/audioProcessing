@@ -32,7 +32,8 @@ def interpolate(options):
     result = op.interpolate(signal.data, int(options.factor))
     audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
-        plotter.plot(**{'Input: '+options.ipath: signal.data, 'Output: '+options.opath: result})
+        plotter.plot(**{'Input: '+options.ipath: signal.data,
+                        'Output: '+options.opath: result})
 
 
 def decimate(options):
@@ -48,7 +49,8 @@ def decimate(options):
     result = op.decimate(signal.data, int(options.factor))
     audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
-        plotter.plot(**{options.ipath: signal.data, options.opath: result})
+        plotter.plot(**{'Input: '+options.ipath: signal.data,
+                        'Output: '+options.opath: result})
 
 
 def shift(options):
@@ -64,7 +66,8 @@ def shift(options):
     result = op.shift(signal.data, int(options.factor))
     audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
-        plotter.plot(**{options.ipath: signal.data, options.opath: result})
+        plotter.plot(**{'Input: '+options.ipath: signal.data,
+                        'Output: '+options.opath: result})
 
 
 def reflect(options):
@@ -79,7 +82,8 @@ def reflect(options):
     result = op.reflect(signal.data)
     audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
-        plotter.plot(**{options.ipath: signal.data, options.opath: result})
+        plotter.plot(**{'Input: '+options.ipath: signal.data,
+                        'Output: '+options.opath: result})
 
 
 def mamplitude(options):
@@ -95,7 +99,8 @@ def mamplitude(options):
     result = op.mamplitude(signal.data, float(options.factor))
     audio.write(options.opath, result, signal.rate, sampwidth=1)
     if options.plot:
-        plotter.plot(**{options.ipath: signal.data, options.opath: result})
+        plotter.plot(**{'Input: '+options.ipath: signal.data,
+                        'Output: '+options.opath: result})
 
 
 def record(options):
@@ -108,6 +113,18 @@ def record(options):
     """
     signal = audio.record(rate=22050, secs=options.secs,
                           store=True, opath=options.opath)
+    if options.plot:
+        plotter.plot(**{options.opath: signal.data})
+
+
+def play(options):
+    """reproduces audio from file 
+
+    Keyword Arguments:
+        options.ipath {str} -- [input path] 
+        options.plot   {boolean} -- [option to plot the signals]
+    """
+    signal = audio.play(options.ipath)
     if options.plot:
         plotter.plot(**{options.opath: signal.data})
 
@@ -211,6 +228,15 @@ def run(args):
     parser_record.add_argument(
         '-plot', '-p', help="plot the resulting signal", default=False)
     parser_record.set_defaults(func=record)
+
+    # create a play subcommand
+    parser_play = subparsers.add_parser('play', aliases=["pl", "reproduce"],
+                                        help='reproduces audio from file')
+    parser_play.add_argument(
+        'ipath', help="Path of the audio file")
+    parser_play.add_argument(
+        '-plot', '-p', help="plot the audio signal", default=False)
+    parser_play.set_defaults(func=play)
 
     # create a gui subcommand
     parser_gui = subparsers.add_parser('gui', aliases=["g", "interface"],

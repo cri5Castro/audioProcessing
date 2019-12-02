@@ -112,22 +112,37 @@ class MainWindow(App):
         return self.MainContainer
     
     def onclick_recordButton(self, emitter):
-        pass
+        instruction = 'python -m record -p True'
+        self.MainContainer.children['filesSelectBox'].set_value('record.wav')
+        os.system(instruction)
 
     def onclick_InterpolateBtn(self, emitter):
-        pass
+        ipath=self.MainContainer.children['filesSelectBox'].get_value()
+        factor=self.MainContainer.children['InterpolateSpinBox'].get_value()
+        instruction = 'python -m controller interpolate '+ipath+' ' + factor +' -p True'
+        os.system(instruction)
 
     def onclick_DecimateBtn(self, emitter):
-        pass
+        ipath=self.MainContainer.children['filesSelectBox'].get_value()
+        factor=self.MainContainer.children['DecimateSpinBox'].get_value()
+        instruction = 'python -m controller decimate '+ipath+' ' + factor +' -p True'
+        os.system(instruction)
 
     def onclick_PlayBtn(self, emitter):
-        pass
-
+        ipath=self.MainContainer.children['filesSelectBox'].get_value()
+        instruction = 'python -m controller play '+ipath+' -p True'
+        os.system(instruction)
+        
     def onclick_ShiftBtn(self, emitter):
-        pass
+        ipath=self.MainContainer.children['filesSelectBox'].get_value()
+        factor=self.MainContainer.children['ShiftSpinBox'].get_value()
+        instruction = 'python -m controller shift '+ipath+' ' + factor +' -p True'
+        os.system(instruction)
 
     def onclick_ReflectBtn(self, emitter):
-        pass
+        ipath=self.MainContainer.children['filesSelectBox'].get_value()
+        instruction = 'python -m controller reflect '+ipath
+        os.system(instruction)
 
     def onclick_ModulateBtn(self, emitter):
         ipath=self.MainContainer.children['filesSelectBox'].get_value()
@@ -138,10 +153,4 @@ class MainWindow(App):
     def onclick_PlotBtn(self, emitter):
         ipath=self.MainContainer.children['filesSelectBox'].get_value()
         instruction = 'python -m controller plot '+ipath
-        os.system(instruction)
-
-    def onclick_InterpolateBtn(self, emitter):
-        ipath=self.MainContainer.children['filesSelectBox'].get_value()
-        factor=self.MainContainer.children['InterpolateSpinBox'].get_value()
-        instruction = 'python -m controller interpolate '+ipath+' ' + factor +' -p True'
         os.system(instruction)
